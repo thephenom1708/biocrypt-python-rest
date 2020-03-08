@@ -20,6 +20,7 @@ def register(request):
     else:
         return HttpResponse("0")
 
+
 @csrf_exempt
 def getUserId(request):
     username = request.POST.get('username', None)
@@ -28,6 +29,7 @@ def getUserId(request):
         'user_id': user.user_id
     }
     return HttpResponse(json.dumps(context))
+
 
 @csrf_exempt
 def verifyPin(request):
@@ -58,6 +60,7 @@ def getCoordinates(request):
     username = request.POST.get('username', None)
     user = User.objects.filter(username=username)[0]
     return HttpResponse(user.coordinates)
+
 
 @csrf_exempt
 def tpsend(request):

@@ -23,7 +23,7 @@ def testing(request):
     print(user_id)
     shareId = "1"
     share = Share()
-    share.createNewShare(user_id, shareId, share_data)
+    share.create_new_share(user_id, shareId, share_data)
     share.save()
     return HttpResponse("Share Received")
 

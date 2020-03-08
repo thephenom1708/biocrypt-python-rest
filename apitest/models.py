@@ -8,7 +8,7 @@ class Share(models.Model):
     share_id = models.CharField(max_length=10)
     share_data = models.TextField()
 
-    def createNewShare(self, user_id, share_id, share_data):
+    def create_new_share(self, user_id, share_id, share_data):
         self.user_id = user_id
         self.share_data = share_data
         self.share_id = share_id
