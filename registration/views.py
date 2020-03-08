@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from apitest.models import Share
 from .models import User
 
+
 @csrf_exempt
 def register(request):
     name = request.POST.get('name', None)

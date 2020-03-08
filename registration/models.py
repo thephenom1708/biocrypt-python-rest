@@ -2,6 +2,7 @@ from django.db import models
 import secrets
 import hashlib
 
+
 # Create your models here.
 class User(models.Model):
     user_id = models.CharField(max_length=100, primary_key=True)
