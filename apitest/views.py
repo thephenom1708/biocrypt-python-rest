@@ -4,7 +4,6 @@ import requests
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from registration.models import User
 from .models import Share
 
 
