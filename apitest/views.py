@@ -13,6 +13,7 @@ def index(request):
 
 @csrf_exempt
 def testing(request):
+    share_id = request.POST.get('share_id', None)
     username = request.POST.get('username', None)
     share_data = request.POST.get('share_data', None)
     context = {
@@ -22,9 +23,8 @@ def testing(request):
     response = requests.post(address, data=context)
     response = json.loads(response.content)
     user_id = response['user_id']
-    shareId = "1"
     share = Share()
-    share.create_new_share(user_id, shareId, share_data)
+    share.create_new_share(user_id, share_id, share_data)
     share.save()
     return HttpResponse("Share Received")
 
