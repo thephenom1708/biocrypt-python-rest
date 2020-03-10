@@ -8,12 +8,12 @@ from .models import Share, UserShareMapping
 
 
 def index(request):
-    return HttpResponse("Hello Buddy");
+    return HttpResponse("Hello World");
 
 
 @csrf_exempt
 def testing(request):
-    share_id = request.POST.get('share_id', None)
+    share_number = request.POST.get('share_number', None)
     username = request.POST.get('username', None)
     share_data = request.POST.get('share_data', None)
     context = {
@@ -25,11 +25,11 @@ def testing(request):
     user_id = response['user_id']
 
     share = Share()
-    share.create_new_share(share_id, share_data)
+    share.create_new_share(share_number, share_data)
     share.save()
 
     user_share_mappings = UserShareMapping.objects.filter(user_id=user_id)
-    if len(user_share_mappings) is 0:
+    if len(user_share_mappings) == 0:
         new_user_share_mapping = UserShareMapping()
         new_user_share_mapping.user_id = user_id
         new_user_share_mapping.save()
@@ -44,7 +44,7 @@ def testing(request):
 @csrf_exempt
 def returnShares(request):
     username = request.POST.get('username', None)
-    share_id = request.POST.get('share_id', None)
+    share_number = request.POST.get('share_id', None)
     context = {
         'username': username
     }
@@ -52,8 +52,9 @@ def returnShares(request):
     response = requests.post(address, data=context)
     response = json.loads(response.content)
     user_id = response['user_id']
-    # user_id = get_user_id(username)
-    share = Share.objects.filter(share_id=share_id, user_id=user_id)[0] or None
+
+    share = Share.objects.filter(share_number=share_number, usersharemapping__user_id=user_id)[0]
+
     if share is not None:
         return HttpResponse(share.share_data)
     else:
