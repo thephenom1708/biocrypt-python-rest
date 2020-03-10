@@ -20,7 +20,7 @@ def testing(request):
     context = {
         'username': username
     }
-    address = "http://192.168.43.216:8080/registration/getUserId/"
+    address = "http://192.168.43.86:8080/registration/getUserId/"
     response = requests.post(address, data=context)
     response = json.loads(response.content)
     user_id = response['user_id']
@@ -49,7 +49,7 @@ def returnShares(request):
     context = {
         'username': username
     }
-    address = "http://192.168.43.216:8080/registration/getUserId/"
+    address = "http://192.168.43.86:8080/registration/getUserId/"
     response = requests.post(address, data=context)
     response = json.loads(response.content)
     user_id = response['user_id']
