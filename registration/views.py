@@ -42,7 +42,7 @@ def verifyPin(request):
     curr_pin_hash = sha.hexdigest()
 
     user = User.objects.filter(username=username)[0]
-    if(curr_pin_hash == user.pin_hash):
+    if curr_pin_hash == user.pin_hash:
         return HttpResponse("1")
     else:
         return HttpResponse("0")
@@ -55,6 +55,7 @@ def uploadFingerprint(request):
     coordinates = request.POST.get('coordinates', None)
     User.objects.filter(username=username).update(fingerprint=fingerprint, coordinates=coordinates)
     return HttpResponse("Uploaded")
+
 
 @csrf_exempt
 def getCoordinates(request):

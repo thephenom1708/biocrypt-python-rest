@@ -4,7 +4,7 @@ import requests
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Share
+from .models import Share, UserShareMapping
 
 
 def index(request):
@@ -23,15 +23,25 @@ def testing(request):
     response = requests.post(address, data=context)
     response = json.loads(response.content)
     user_id = response['user_id']
+
     share = Share()
-    share.create_new_share(user_id, share_id, share_data)
+    share.create_new_share(share_id, share_data)
     share.save()
+
+    user_share_mapping = UserShareMapping.objects.get(user_id=user_id) or None
+    if user_share_mapping is None:
+        user_share_mapping = Share()
+        user_share_mapping.user_id = user_id
+
+    user_share_mapping.shares.add(share)
+
     return HttpResponse("Share Received")
 
 
 @csrf_exempt
 def returnShares(request):
     username = request.POST.get('username', None)
+    share_id = request.POST.get('share_id', None)
     context = {
         'username': username
     }
@@ -40,8 +50,11 @@ def returnShares(request):
     response = json.loads(response.content)
     user_id = response['user_id']
     # user_id = get_user_id(username)
-    share = Share.objects.filter(user_id=user_id)[0]
-    return HttpResponse(share.share_data)
+    share = Share.objects.filter(share_id=share_id, user_id=user_id)[0] or None
+    if share is not None:
+        return HttpResponse(share.share_data)
+    else:
+        return HttpResponse("")
 
 
 @csrf_exempt
