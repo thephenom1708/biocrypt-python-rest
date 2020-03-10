@@ -4,6 +4,7 @@ import requests
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from registration.models import User
 from .models import Share, UserShareMapping
 
 
@@ -54,7 +55,7 @@ def returnShares(request):
     user_id = response['user_id']
 
     share = Share.objects.filter(share_number=share_number, usersharemapping__user_id=user_id)[0]
-    
+
     if share is not None:
         return HttpResponse(share.share_data)
     else:
@@ -62,11 +63,18 @@ def returnShares(request):
 
 
 @csrf_exempt
-def tp(request):
-    #share = Share.objects.filter(user_id="abc")[0]
-    #Share.objects.all().delete()
-    context = {
-        'data': "123"
-    }
+def delete_shares(request):
+    Share.objects.all().delete()
+    return HttpResponse("")
 
-    return HttpResponse(json.dumps(context))
+
+@csrf_exempt
+def delete_user_mappings(request):
+    UserShareMapping.objects.all().delete()
+    return HttpResponse("")
+
+
+@csrf_exempt
+def delete_users(request):
+    User.objects.all().delete()
+    return HttpResponse("")
