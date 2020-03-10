@@ -1,8 +1,9 @@
 import json
 
 import requests
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 
 from registration.models import User
 from .models import Share, UserShareMapping
@@ -45,7 +46,6 @@ def testing(request):
 @csrf_exempt
 def returnShares(request):
     username = request.POST.get('username', None)
-    share_number = request.POST.get('share_number', None)
     context = {
         'username': username
     }
@@ -54,12 +54,18 @@ def returnShares(request):
     response = json.loads(response.content)
     user_id = response['user_id']
 
-    share = Share.objects.filter(share_number=share_number, usersharemapping__user_id=user_id)[0]
+    shares = UserShareMapping.objects.get(user_id=user_id).shares.all()
 
-    if share is not None:
-        return HttpResponse(share.share_data)
-    else:
-        return HttpResponse("")
+    shareList = []
+    for share in list(shares):
+        shareList.append({
+            'share_number': share.share_number,
+            'share_data': share.share_data
+        })
+    context = {
+        'shares': shareList
+    }
+    return JsonResponse(context)
 
 
 @csrf_exempt

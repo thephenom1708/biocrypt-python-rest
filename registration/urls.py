@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^verifyPin/$', views.verifyPin, name='verifyPin'),
     url(r'^uploadFingerprint/$', views.uploadFingerprint, name='uploadFingerprint'),
     url(r'^getCoordinates/$', views.getCoordinates, name='getCoordinates'),
+    url(r'^get-users/$', views.get_users, name='get_users'),
 ]

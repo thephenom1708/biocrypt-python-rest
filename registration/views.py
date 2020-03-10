@@ -72,3 +72,12 @@ def tpsend(request):
         'data': "Hello"
     }
     return HttpResponse(json.dumps(context))
+
+
+@csrf_exempt
+def get_users(request):
+    users = list(User.objects.all().values("name"))
+    context = {
+        'users': users
+    }
+    return JsonResponse(context)
