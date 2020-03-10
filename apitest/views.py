@@ -28,12 +28,15 @@ def testing(request):
     share.create_new_share(share_id, share_data)
     share.save()
 
-    user_share_mapping = UserShareMapping.objects.get(user_id=user_id) or None
-    if user_share_mapping is None:
-        user_share_mapping = Share()
-        user_share_mapping.user_id = user_id
+    user_share_mappings = UserShareMapping.objects.filter(user_id=user_id)
+    if len(user_share_mappings) is 0:
+        new_user_share_mapping = UserShareMapping()
+        new_user_share_mapping.user_id = user_id
+        new_user_share_mapping.save()
 
+    user_share_mapping = UserShareMapping.objects.get(user_id=user_id)
     user_share_mapping.shares.add(share)
+    user_share_mapping.save()
 
     return HttpResponse("Share Received")
 

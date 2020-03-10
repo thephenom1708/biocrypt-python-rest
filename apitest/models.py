@@ -10,12 +10,12 @@ class Share(models.Model):
         self.share_id = share_id
 
     def __str__(self):
-        return str(self.share_id + "-" + self.user_id)
+        return str(self.share_id)
 
 
 class UserShareMapping(models.Model):
     user_id = models.CharField(max_length=100, primary_key=True)
-    shares = models.ManyToManyField(Share, blank=True, null=True)
+    shares = models.ManyToManyField(Share)
 
     def __str__(self):
         return str(self.user_id)
