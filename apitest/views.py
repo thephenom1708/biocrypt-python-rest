@@ -44,7 +44,7 @@ def testing(request):
 @csrf_exempt
 def returnShares(request):
     username = request.POST.get('username', None)
-    share_number = request.POST.get('share_id', None)
+    share_number = request.POST.get('share_number', None)
     context = {
         'username': username
     }
@@ -54,7 +54,7 @@ def returnShares(request):
     user_id = response['user_id']
 
     share = Share.objects.filter(share_number=share_number, usersharemapping__user_id=user_id)[0]
-
+    
     if share is not None:
         return HttpResponse(share.share_data)
     else:
