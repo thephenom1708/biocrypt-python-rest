@@ -76,7 +76,7 @@ def tpsend(request):
 
 @csrf_exempt
 def get_users(request):
-    users = list(User.objects.all().values("name"))
+    users = list(User.objects.all().values("username"))
     context = {
         'users': users
     }
